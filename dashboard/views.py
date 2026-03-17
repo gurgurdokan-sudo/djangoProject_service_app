@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
-from .models import User, ServiceMaster, get_quer_plan
+from .models import User, ServiceMaster
 from .excel.service_sheet import create_service_sheet
 from .forms import UserForm
 #利用者一覧
