@@ -60,7 +60,8 @@ def user_delete(request,user_id):
 def user_service(request,user_id):
     target = get_object_or_404(User,id=user_id)
     timezone = target.serviceplan_set.all()
-    plans = get_query_plan(target.level,timezone)
+    plans = ServiceMaster.get_query_plan(target.care_level,timezone)
+    print(str(target.care_level))
     service = ServiceMaster.objects.all()
     return render(request,'dashboard/user_service.html',\
         {'user':target,'plans':plans,'service':service})

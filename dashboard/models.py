@@ -45,9 +45,10 @@ class ServiceMaster(models.Model):
     def __str__(self):
         return str(self.service_name)
     @classmethod
-    def get_quer_plan(cls,level,timezone):
-        plan = cls.objects.filter(care_level = level,stay_time_category = timezone)
-        return plan if plan else -1
+    def get_query_plan(cls,level,timezone):
+        print(level)
+        plan = cls.objects.filter(care_level = level,stay_time_category = '3-4')
+        return plan.service_name if plan else -1
 
 # class ServicePlan(models.Model):
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -2,16 +2,11 @@
 {% block body %}
     <h2>{{ user.name }} さんのサービス一覧</h2>
     <ul>
-    {% for plan in plans %}
-        <li>{{ plan.date }} {{ plan.start_time }}〜{{ plan.end_time }}</li>
-        <li>{{ plan.stay_time_category }}</li>
-        {% empty %}
-        <li>サービスは登録されていません</li>
-        {% endfor %}
-    <li></li>
+        <li>{{ plans }}</li>
     </ul>
     <table class="data-table">
         <tr>
+            <th></th>
             <th>サービス内容</th>
             <th>コード</th>
             <th>滞在時間</th>
