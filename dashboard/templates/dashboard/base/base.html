@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>民の家＜サービス提供票＞</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+</head>
+<body>
+    <a href="{% url 'dashboard:user_list' %}">タイトルに戻る</a>
+    {% block body %}
+    {% endblock %}
+</body>
+</html>

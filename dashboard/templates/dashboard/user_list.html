@@ -1,0 +1,41 @@
+{% extends "dashboard/base/base.html" %}
+{% block body %}
+<div class="container">
+  <div class="header-container">
+    <h1 class="page-title">利用者一覧</h1>
+    <label><a href="{% url 'dashboard:create' %}" class="btn btn-create">新規作成</a></label>
+  </div>
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="message-item {{message.tags}}">{{message}}</li>        
+      {% endfor %}
+    </ul>
+  {% endif %}
+  <table class="data-table">
+  <tr>
+    {% comment %} <th>ID</th> {% endcomment %}
+    <th>要介護度</th>
+    <th>名前(詳細)</th>
+    <th>Excel</th>
+    <th>編集</th>
+    <th>サービス提供票</th>
+  </tr>
+  {% if users %}
+    {% for user in users %}
+    <tr>
+      {% comment %} <td>{{ user.id }}</td> {% endcomment %}
+      <td class="badge">{{ user.care_level }}</td>
+      <td><a href="{% url 'dashboard:detail' user.id %}" class="link-name">{{ user.name }}</a></td>
+      <td><a href="{% url 'dashboard:export_service_sheet' user.id 2026 3 %}" class="btn btn-excel">Excel出力</a></td>
+      <td><a href="{% url 'dashboard:update' user.id %}" class="btn btn-edit">編集</a></td>
+      <td><a href="{% url 'dashboard:service' user.id %}" class="btn">サービス提供票</a></td>
+      </td>
+    </tr>
+    {% endfor %}
+  {% else %}
+    <li>利用者が登録されていません</li>
+  {% endif %}
+  </table>
+</div>
+{% endblock %}
