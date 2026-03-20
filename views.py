@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import User, ServiceMaster, ServicePlan
 from .excel.service_sheet import create_service_sheet
 from .forms import UserForm
+from .calendar_table import get_month_days
 #利用者一覧
 def user_list(request):
     users = User.objects.all()
@@ -61,8 +62,8 @@ def user_service(request,user_id):
     target = get_object_or_404(User,id=user_id)
     plan = ServicePlan.objects.get(user=target)
     service = ServiceMaster.objects.all()
-    print(plan.stay_time_category)
-    naiyou = ServiceMaster.get_quer_plan(level=target.care_level,stay_time_category = '5-6').first()
+    naiyou = ServiceMaster.get_quer_plan(level=target.care_level,stay_time_category = plan.stay_time_category).first()
+    calendar = get_month_days(2026,3) #todo:月は動的に
     context = {
         'user': target,
         'plan': plan,
@@ -70,3 +71,17 @@ def user_service(request,user_id):
         'naiyou':naiyou,
     }
     return render(request,'dashboard/user_service.html',{'context':context})
+def test(request,user_id):
+    target = get_object_or_404(User,id=user_id)
+    plan = ServicePlan.objects.get(user=target)
+    service = ServiceMaster.objects.all()
+    naiyou = ServiceMaster.get_quer_plan(level=target.care_level,stay_time_category = plan.stay_time_category).first()
+    calendar = get_month_days(2026,3) #todo:月は動的に
+    context = {
+        'user': target,
+        'plan': plan,
+        'service': service,
+        'naiyou':naiyou,
+        'calendar': calendar,
+    }
+    return render(request,'dashboard/base/test.html',{'context':context}) 
