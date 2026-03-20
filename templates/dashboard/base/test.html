@@ -21,7 +21,7 @@
             <div class="calendar-row weekday-row">
               <div class="label-cell">曜日</div>
               {% for d in context.calendar %}<!-- 1〜31のループ想定 -->
-              <div class="day-cell {% if d.is_sun %}sun{% elif d.is_sat %}sat {% elif d.is_holiday %}holi {% endif %}">{{ d.week_jp }}</div>
+              <div class="day-cell {% if d.is_sun %}sun{% elif d.is_sat %}sat {% elif d.is_holiday %}holiday {% endif %}">{{ d.weekday_jp }}</div>
               {% endfor %}
               <div class="total-cell">回数</div>
             </div>
@@ -29,7 +29,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- データがある場合のサンプル -->
+        {% if  context.naiyou %}
         <tr>
           <td class="col-time"> {{ context.plan.start_time }}〜<br />{{ context.plan.end_time }}</td>
           <td class="col-service">{{ context.naiyou }}</td>
@@ -37,9 +37,8 @@
           <td class="col-calendar">
             <div class="calendar-row data-row">
               <div class="label-cell">予定</div>
-              <!-- 各日付のセル -->
               {% for d in context.calendar %}<!-- 1〜31のループ想定 -->
-              <div class="day-cell {% if d.is_sun %}sun{% elif d.is_sat %}sat {% elif d.is_holiday %}holiday {% endif %}">
+              <div class="day-cell {% if d.is_sun %}sun{% elif d.is_sat %}sat {% elif d.is_holiday %}holi {% endif %}">
                 <!-- ここにサービス提供の有無を表示（例:1） -->
               </div>
               {% endfor %}
@@ -52,13 +51,14 @@
                 <!-- ここにサービス提供の有無を表示（例:1） -->
               </div>
               {% endfor %}
-            <div class="total-cell"></div>
-          </td>
+              <div class="total-cell"></div>
+            </td>
         </tr>
-        <!-- データがない場合 -->
+        {% else %}
         <tr class="no-data">
           <td colspan="5">データが見つかりません</td>
         </tr>
+        {% endif %}
       </tbody>
     </table>
   </div>

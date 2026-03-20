@@ -32,11 +32,11 @@ class User(models.Model):
             case '要介護5':
                 return 36217
             case _:
-                return -1
+                return None
 
 class ServiceMaster(models.Model):
     care_level = models.CharField(max_length=10, choices=LEVEL_CHOICES)
-    STAY_TIME_CHOICES = [('<3','<3'),('3-4','3-4'),('4-5','4-5'),('5-6','5-6'),('6-7','6-7'),('7-8','7-8'),('8-9','8-9')]
+    STAY_TIME_CHOICES = [('<3','3時間以下'),('3-4','3以上-4未満'),('4-5','4以上-5未満'),('5-6','5以上-6未満'),('6-7','6以上-7未満'),('7-8','7以上-8未満'),('8-9','8以上-9未満')]
     stay_time_category = models.CharField(max_length=20, choices=STAY_TIME_CHOICES)
     service_code = models.CharField(max_length=20)
     service_name = models.CharField(max_length=20)
@@ -46,8 +46,11 @@ class ServiceMaster(models.Model):
         return str(self.service_name)
     @classmethod
     def get_quer_plan(cls,level,stay_time_category):
-        plan = cls.objects.filter(care_level = level,stay_time_category = stay_time_category)
-        return plan if plan else -1
+        try:
+            plan = cls.objects.filter(care_level = level,stay_time_category = stay_time_category)
+        except cls.DoesNotExist:
+            return None
+        return plan if plan else None
 
 # class ServicePlan(models.Model):
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -101,7 +104,7 @@ class ServicePlan(models.Model):
         elif 8 < hours <= 9:
             return '8-9'
         else:
-            return '-1'
+            return None
     def __str__(self):
         return str(self.user)
 
