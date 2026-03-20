@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
-from .models import User, ServiceMaster
+from .models import User, ServiceMaster, ServicePlan
 from .excel.service_sheet import create_service_sheet
 from .forms import UserForm
 #利用者一覧
@@ -59,8 +59,14 @@ def user_delete(request,user_id):
 #サービス提供票
 def user_service(request,user_id):
     target = get_object_or_404(User,id=user_id)
-    timezone = target.serviceplan_set.all()
-    plans = get_query_plan(target.level,timezone)
+    plan = ServicePlan.objects.get(user=target)
     service = ServiceMaster.objects.all()
-    return render(request,'dashboard/user_service.html',\
-        {'user':target,'plans':plans,'service':service})
+    print(plan.stay_time_category)
+    naiyou = ServiceMaster.get_quer_plan(level=target.care_level,stay_time_category = '5-6').first()
+    context = {
+        'user': target,
+        'plan': plan,
+        'service': service,
+        'naiyou':naiyou,
+    }
+    return render(request,'dashboard/user_service.html',{'context':context})

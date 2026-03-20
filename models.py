@@ -45,8 +45,8 @@ class ServiceMaster(models.Model):
     def __str__(self):
         return str(self.service_name)
     @classmethod
-    def get_quer_plan(cls,level,timezone):
-        plan = cls.objects.filter(care_level = level,stay_time_category = timezone)
+    def get_quer_plan(cls,level,stay_time_category):
+        plan = cls.objects.filter(care_level = level,stay_time_category = stay_time_category)
         return plan if plan else -1
 
 # class ServicePlan(models.Model):
@@ -76,7 +76,7 @@ class ServiceRecord(models.Model):
     def __str__(self):
         return str(self.user)
 class ServicePlan(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     date = models.DateField(default="2024-01-01")
     start_time = models.TimeField(default="09:00")
     end_time = models.TimeField(default="15:01")
