@@ -1,0 +1,30 @@
+{% extends 'dashboard/base/base.html' %}
+{% block body %}
+    <h2>{{ user.name }} さんのサービス一覧</h2>
+    <ul>
+    {% for plan in plans %}
+        <li>{{ plan.date }} {{ plan.start_time }}〜{{ plan.end_time }}</li>
+        <li>{{ plan.stay_time_category }}</li>
+        {% empty %}
+        <li>サービスは登録されていません</li>
+        {% endfor %}
+    <li></li>
+    </ul>
+    <table class="data-table">
+        <tr>
+            <th>サービス内容</th>
+            <th>コード</th>
+            <th>滞在時間</th>
+            <th>単位</th>
+        </tr>
+    {% for ser in service %}
+        <tr>
+            <td><input type="radio" name="" id=""></td>
+            <td>{{ ser.service_name }}</td>
+            <td>{{ ser.service_code }}</td>
+            <td>{{ ser.stay_time_category }}</td>
+            <td>{{ ser.unit }}</td>
+        </tr>
+    {% endfor %}
+    </dev>
+{% endblock %}
