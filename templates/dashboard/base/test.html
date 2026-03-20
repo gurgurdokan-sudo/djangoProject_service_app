@@ -1,0 +1,65 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'main.css' %}">
+<link rel="stylesheet" href="{% static 'teble.css' %}">
+  <div class="table-wrapper">
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th class="col-time">提供時間</th>
+          <th class="col-service">サービス内容</th>
+          <th class="col-office">事業所名</th>
+          <th class="col-calendar">
+            <!-- 日付行 -->
+            <div class="calendar-row date-row">
+              <div class="label-cell">日付</div>
+              {% for d in context.calendar %}<!-- 1〜31のループ想定 -->
+              <div class="day-cell {% if d.is_sun %}sun{% elif d.is_sat %}sat {% elif d.is_holiday %}holi {% endif %}">{{ d.day }}</div>
+              {% endfor %}
+              <div class="total-cell">合計</div>
+            </div>
+            <!-- 曜日行 -->
+            <div class="calendar-row weekday-row">
+              <div class="label-cell">曜日</div>
+              {% for d in context.calendar %}<!-- 1〜31のループ想定 -->
+              <div class="day-cell {% if d.is_sun %}sun{% elif d.is_sat %}sat {% elif d.is_holiday %}holi {% endif %}">{{ d.week_jp }}</div>
+              {% endfor %}
+              <div class="total-cell">回数</div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- データがある場合のサンプル -->
+        <tr>
+          <td class="col-time"> {{ context.plan.start_time }}〜<br />{{ context.plan.end_time }}</td>
+          <td class="col-service">{{ context.naiyou }}</td>
+          <td class="col-office">通所介護事務所<br />民の家</td>
+          <td class="col-calendar">
+            <div class="calendar-row data-row">
+              <div class="label-cell">予定</div>
+              <!-- 各日付のセル -->
+              {% for d in context.calendar %}<!-- 1〜31のループ想定 -->
+              <div class="day-cell {% if d.is_sun %}sun{% elif d.is_sat %}sat {% elif d.is_holiday %}holiday {% endif %}">
+                <!-- ここにサービス提供の有無を表示（例:1） -->
+              </div>
+              {% endfor %}
+              <div class="total-cell"></div>
+            </div>
+            <div class="calendar-row data-row">
+              <div class="label-cell">実績</div>
+              {% for d in context.calendar %}<!-- 1〜31のループ想定 -->
+              <div class="day-cell {% if d.is_sun %}sun{% elif d.is_sat %}sat {% elif d.is_holiday %}holi {% endif %}">
+                <!-- ここにサービス提供の有無を表示（例:1） -->
+              </div>
+              {% endfor %}
+            <div class="total-cell"></div>
+          </td>
+        </tr>
+        <!-- データがない場合 -->
+        <tr class="no-data">
+          <td colspan="5">データが見つかりません</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
