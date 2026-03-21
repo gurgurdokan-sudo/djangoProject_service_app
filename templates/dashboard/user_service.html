@@ -35,23 +35,23 @@
           <td class="col-service">{{ context.naiyou }}</td>
           <td class="col-office">通所介護事務所<br />民の家</td>
           <td class="col-calendar">
-            <div class="calendar-row data-row">
+            <div class="calendar-row data-row" data-row-type="schedule">
               <div class="label-cell">予定</div>
-              {% for d in context.calendar %}<!-- 1〜31のループ想定 -->
-              <div class="day-cell {% if d.is_sun %}sun{% elif d.is_sat %}sat {% elif d.is_holiday %}holi {% endif %}">
-                <!-- ここにサービス提供の有無を表示（例:1） -->
-              </div>
+              {% for d in context.calendar %}
+                <div class="day-cell editable-cell {% if d.is_sun %}sun{% elif d.is_sat %}sat {% elif d.is_holiday %}holi {% endif %}">
+                <!-- ここにサービス提供の有無を表示（例:1,×） -->
+                </div>
               {% endfor %}
-              <div class="total-cell"></div>
+              <div class="total-cell">0</div>
             </div>
-            <div class="calendar-row data-row">
+            <div class="calendar-row data-row" data-row-type="actual">
               <div class="label-cell">実績</div>
-              {% for d in context.calendar %}<!-- 1〜31のループ想定 -->
-              <div class="day-cell {% if d.is_sun %}sun{% elif d.is_sat %}sat {% elif d.is_holiday %}holi {% endif %}">
-                <!-- ここにサービス提供の有無を表示（例:1） -->
-              </div>
+              {% for d in context.calendar %}
+                <div class="day-cell editable-cell {% if d.is_sun %}sun{% elif d.is_sat %}sat {% elif d.is_holiday %}holi {% endif %}">
+                <!-- ここにサービス提供の有無を表示（例:1,△） -->
+                </div>
               {% endfor %}
-              <div class="total-cell"></div>
+              <div class="total-cell">0</div>
             </td>
         </tr>
         {% else %}
@@ -80,4 +80,6 @@
   </tr>
   {% endfor %}
   </dev>
+  {% load static %}
+  <script src="{% static 'edit.js' %}"></script>
   {% endblock %}
