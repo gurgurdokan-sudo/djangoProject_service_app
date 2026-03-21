@@ -63,7 +63,8 @@ def user_service(request,user_id):
     plan = ServicePlan.objects.get(user=target)
     service = ServiceMaster.objects.all()
     service = service.filter(care_level = target.care_level)
-    naiyou = ServiceMaster.get_quer_plan(level=target.care_level,stay_time_category = plan.stay_time_category)
+    sq = ServiceMaster.get_quer_plan(level=target.care_level,stay_time_category = plan.stay_time_category)
+    naiyou = sq.first() if sq else None
     calendar = get_month_days(2026,3) #todo:月は動的に
     context = {
         'user': target,
@@ -77,7 +78,7 @@ def test(request,user_id):
     target = get_object_or_404(User,id=user_id)
     plan = ServicePlan.objects.get(user=target)
     service = ServiceMaster.objects.all()
-    naiyou = ServiceMaster.get_quer_plan(level=target.care_level,stay_time_category = plan.stay_time_category).first()
+    naiyou = ServiceMaster.get_quer_plan(level=target.care_level,stay_time_category = plan.stay_time_category)
     calendar = get_month_days(2026,3) #todo:月は動的に
     context = {
         'user': target,

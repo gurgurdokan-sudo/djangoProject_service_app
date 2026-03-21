@@ -70,13 +70,13 @@
     <th>滞在時間</th>
     <th>単位</th>
   </tr>
-  {% for ser in context.service %}
+  {% for s in context.service %}
   <tr>
     <td><input type="radio" name="" id=""></td>
-    <td>{{ ser.service_name }}</td>
-    {% comment %} <td>{{ ser.service_code }}</td> {% endcomment %}
-    <td>{{ ser.get_stay_time_category_display }}</td>
-    <td>{{ ser.unit }}</td>
+    <td>{{ s.service_name }}</td>
+    {% comment %} <td>{{ s.service_code }}</td> {% endcomment %}
+    <td>{{ s.get_stay_time_category_display }}</td>
+    <td>{{ s.unit }}</td>
   </tr>
   {% endfor %}
   </dev>

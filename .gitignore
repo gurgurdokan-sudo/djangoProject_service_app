@@ -1,0 +1,32 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Django ---
+*.log
+*.pot
+*.pyc
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+# --- VSCode ---
+.vscode/
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Docker ---
+/data/
+/tmp/
+/*.pid
+
+# --- Virtualenv ---
+venv/
+env/
+.venv/
+
+# --- IDE ---
+.idea/
