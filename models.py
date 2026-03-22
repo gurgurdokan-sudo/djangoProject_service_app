@@ -3,7 +3,8 @@ from datetime import datetime, date
 
 LEVEL_CHOICES = [('要支護1', '要支護1'),('要支護2', '要支護2'),('要介護1', '要介護1'),('要介護2', '要介護2'),('要介護3', '要介護3'),('要介護4', '要介護4'),('要介護5', '要介護5'),]
 
-class User(models.Model):
+class User(models.Model): 
+    '''被保険者の情報を管理するモデル'''
     name = models.CharField(max_length=100,verbose_name='被保険者氏名')
     name_kana = models.CharField(max_length=100,verbose_name='フリガナ')
     care_level = models.CharField(max_length=10,choices=LEVEL_CHOICES,verbose_name='要介護状態区分')  # 要介護1など
@@ -35,6 +36,7 @@ class User(models.Model):
                 return None
 
 class ServiceMaster(models.Model):
+    '''提供されるサービスのマスターデータを管理するモデル'''
     care_level = models.CharField(max_length=10, choices=LEVEL_CHOICES)
     STAY_TIME_CHOICES = [('<3','3時間以下'),('3-4','3以上-4未満'),('4-5','4以上-5未満'),('5-6','5以上-6未満'),('6-7','6以上-7未満'),('7-8','7以上-8未満'),('8-9','8以上-9未満')]
     stay_time_category = models.CharField(max_length=20, choices=STAY_TIME_CHOICES)
@@ -70,7 +72,8 @@ class ServiceMaster(models.Model):
 #     def __str__(self):
 #         return str(self.year)+'年'+str(self.month)+'月'
 
-class ServiceRecord(models.Model):
+class ServiceRecord(models.Model): 
+    '''実際に提供されたサービスの記録を管理するモデル'''
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     service = models.ForeignKey(ServiceMaster, on_delete=models.CASCADE)
     date = models.DateField()
@@ -78,15 +81,15 @@ class ServiceRecord(models.Model):
     notes = models.TextField(blank=True)
     def __str__(self):
         return str(self.user)
-class ServicePlan(models.Model):
+class ServicePlan(models.Model): 
+    '''サービス提供計画を管理するモデル'''
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     date = models.DateField(default="2024-01-01")
     start_time = models.TimeField(default="09:00")
     end_time = models.TimeField(default="15:01")
-
-    @property
+    @property 
     def stay_time_category(self):
-        # 時間差からカテゴリを判定
+        '''サービス提供時間を返すプロパティ'''
         delta = datetime.combine(date.min, self.end_time) - datetime.combine(date.min, self.start_time)
         hours = delta.total_seconds() / 3600
         if hours <= 3:

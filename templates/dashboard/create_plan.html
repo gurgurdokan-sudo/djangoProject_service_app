@@ -1,0 +1,10 @@
+{% extends 'dashboard/base/base.html' %}
+{% block body %}
+<h2>{{ context.user.name }} さんのサービス提供計画作成</h2>
+<form method="post" class="plan-form">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">保存</button>
+</form>
+</div>
+{% endblock %}

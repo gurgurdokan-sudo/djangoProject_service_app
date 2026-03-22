@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, ServicePlan
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -16,4 +16,22 @@ class UserForm(forms.ModelForm):
         }
         widgets = {
         'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+        }
+class PlanForm(forms.ModelForm):
+    def __init__(self, *args, user_id=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user_id:
+            self.user_id = user_id
+    class Meta:
+        model = ServicePlan
+        fields = ['date','start_time','end_time']
+        labels = {
+            'date': 'サービス提供開始日',
+            'start_time': '開始時間',
+            'end_time': '終了時間',
+        }
+        widgets = {
+        'date': forms.DateInput(attrs={'type': 'date'}),
+        'start_time': forms.TimeInput(attrs={'type': 'time'}),
+        'end_time': forms.TimeInput(attrs={'type': 'time'}),
         }

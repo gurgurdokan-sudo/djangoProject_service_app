@@ -29,7 +29,11 @@
       <td><a href="{% url 'dashboard:detail' user.id %}" class="link-name">{{ user.name }}</a></td>
       <td><a href="{% url 'dashboard:export_service_sheet' user.id 2026 3 %}" class="btn btn-excel">Excel出力</a></td>
       <td><a href="{% url 'dashboard:update' user.id %}" class="btn btn-edit">編集</a></td>
+      {% if  user.has_plan %}
       <td><a href="{% url 'dashboard:service' user.id %}" class="btn">サービス提供票</a></td>
+      {% else %}
+      <td><a href="{% url 'dashboard:creatPlan' user.id %}" class="btn">サービス提供票</a></td>
+      {% endif %}
       </td>
     </tr>
     {% endfor %}

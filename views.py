@@ -3,11 +3,13 @@ from django.http import HttpResponse
 from django.contrib import messages
 from .models import User, ServiceMaster, ServicePlan
 from .excel.service_sheet import create_service_sheet
-from .forms import UserForm
+from .forms import UserForm, PlanForm
 from .calendar_table import get_month_days
 #利用者一覧
 def user_list(request):
     users = User.objects.all()
+    for user in users:
+        user.has_plan = ServicePlan.objects.filter(user=user).exists()
     return render(request, 'dashboard/user_list.html', {'users': users})
 #新規作成
 def user_create(request):
@@ -20,6 +22,19 @@ def user_create(request):
     else:
         form = UserForm()
     return render(request,'dashboard/user_form.html', {'form': form})
+#Plan作成
+def create_plan(request,user_id):
+    if request.method == 'POST':
+        form = PlanForm(request.POST,user_id=user_id)
+        if form.is_valid():
+            plan = form.save(commit=False)
+            plan.user_id = user_id
+            form.save()
+            messages.success(request,'プランを作成しました')
+            return redirect('dashboard:service',user_id=user_id)
+    else:
+        form = PlanForm()
+    return render(request,'dashboard/create_plan.html', {'form': form})
 #Excel出力
 def export_service_sheet(request, user_id, year, month):
     user = User.objects.get(id=user_id)
@@ -53,8 +68,8 @@ def user_detail(request,user_id):
 def user_delete(request,user_id):
     target = get_object_or_404(User,id=user_id)
     if request.method=='POST':
+        messages.error(request,f'{target.name}さんを消去しました')
         target.delete()
-        messages.error(request,f'{user.name}さんを消去しました')
         return redirect('dashboard:user_list')
     return render(request,'dashboard/user_delete.html',{'user':target})
 #サービス提供票
